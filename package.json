@@ -1,0 +1,16 @@
+{
+  "name": "site-deploy",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "dev": "next dev"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "next": "^13.5.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
