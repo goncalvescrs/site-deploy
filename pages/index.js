@@ -1,7 +1,5 @@
-function HOME(){
-  return (
-    <h1>Olá pessoal</h1>
-  )
+function HOME() {
+  return <h1>Olá pessoal</h1>;
 }
 
 export default HOME;
