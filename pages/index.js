@@ -1,5 +1,3 @@
-import Api from "./api";
-
 function HOME() {
   return (
     <>
