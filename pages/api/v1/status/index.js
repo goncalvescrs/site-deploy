@@ -1,11 +1,10 @@
-function status(request, response) {
-  // response.status(200).send("resposta do status");
-  response.status(200).json({
-    chave: "show de bola bonitão",
-    Chave2: {
-      subChave: "toma esse codigo",
-    },
-  });
+import database from "../../../../infra/database.js";
+
+async function status(request, response) {
+  const result = await database.query("SELECT 1 + 1 AS SUM;");
+  console.log(result.rows);
+
+  response.status(200).json({ chave: "show de bola bonitão" });
 }
 
 export default status;
