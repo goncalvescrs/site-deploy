@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "script.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run services:up && next dev",
+    "services:up": "wsl docker compose -f infra/compose.yaml up -d",
+    "services:stop": "wsl docker compose -f infra/compose.yaml stop",
+    "services:down": "wsl docker compose -f infra/compose.yaml down",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "jest",
