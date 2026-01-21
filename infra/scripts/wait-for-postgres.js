@@ -7,18 +7,16 @@ function checkPostgres() {
   );
 
   function handleReturn(error, stderr, stdout) {
-    // const output = (stderr + stdout).trim();
-
     if (stderr.search("accepting connections") === -1) {
       process.stderr.write(".");
       checkPostgres();
       return;
     }
 
-    console.log("\n🟢 Postgres está aceitando conexões.\n");
+    console.log("\n🟢 Postgres está aceitando conexões!\n");
     return;
   }
 }
 
-process.stderr.write("\n\n🔴 Aguardando postgres aceitar conexão.");
+process.stderr.write("\n🔴 Aguardando postgres aceitar conexão");
 checkPostgres();
