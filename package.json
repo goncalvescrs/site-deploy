@@ -8,7 +8,7 @@
     "posttest": "npm run services:stop",
     "test:ci": "npm run services:up:ci && concurrently -n next,jest --hide next -k -s command-jest -c \"none,bgMagenta.bold.black\" \"next dev\" \"jest --runInBand --verbose\"",
     "posttest:ci": "npm run services:stop:ci",
-    "test:watch": "jest --watchAll --runInBand",
+    "test:watch": "jest --watchAll --runInBand --verbose",
     "services:up": "wsl docker compose --file infra/compose.yaml up -d",
     "services:up:ci": "docker compose --file infra/compose.yaml up -d",
     "services:stop": "wsl docker compose -f infra/compose.yaml stop",
