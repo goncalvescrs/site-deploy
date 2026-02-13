@@ -1,6 +1,6 @@
 import retry from "async-retry";
 import database from "infra/database.js";
-import migrator from "model/migrator";
+import migrator from "models/migrator";
 
 async function clearDatabase() {
   await database.query("drop schema public cascade; create schema public;");
