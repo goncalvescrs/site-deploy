@@ -152,6 +152,19 @@ describe("GET /api/v1/users", () => {
         action: "Verifique se este usuário está logado e tente novamente.",
         status_code: 401,
       });
+
+      // Set-Cookie assertions
+      const parsedSetCookie = setCookieParser(response, {
+        map: true,
+      });
+
+      expect(parsedSetCookie.session_id).toEqual({
+        name: "session_id",
+        value: "invalid",
+        maxAge: -1,
+        path: "/",
+        httpOnly: true,
+      });
     });
 
     test("Expired session", async () => {
@@ -172,6 +185,7 @@ describe("GET /api/v1/users", () => {
           Cookie: `session_id=${sessionObject.token}`,
         },
       });
+
       expect(response.status).toBe(401);
 
       const responseBody = await response.json();
@@ -180,6 +194,19 @@ describe("GET /api/v1/users", () => {
         message: "Usuário não possui sessão ativa.",
         action: "Verifique se este usuário está logado e tente novamente.",
         status_code: 401,
+      });
+
+      // Set-Cookie assertions
+      const parsedSetCookie = setCookieParser(response, {
+        map: true,
+      });
+
+      expect(parsedSetCookie.session_id).toEqual({
+        name: "session_id",
+        value: "invalid",
+        maxAge: -1,
+        path: "/",
+        httpOnly: true,
       });
     });
   });
