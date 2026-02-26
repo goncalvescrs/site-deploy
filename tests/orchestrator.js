@@ -6,12 +6,11 @@ import migrator from "models/migrator.js";
 import user from "models/user.js";
 import session from "models/session.js";
 
-async function clearDatabase() {
-  await database.query("drop schema public cascade; create schema public;");
-}
+const emailHttpUrl = `http://${process.env.EMAIL_HTTP_HOST}:${process.env.EMAIL_HTTP_PORT}`;
 
 async function waitForAllServices() {
   await waitForWebServer();
+  await waitForEmailServer();
 
   async function waitForWebServer() {
     return retry(fetchStatusPage, {
@@ -21,11 +20,31 @@ async function waitForAllServices() {
 
     async function fetchStatusPage() {
       const response = await fetch("http://localhost:3000/api/v1/status");
+
       if (response.status !== 200) {
         throw new Error("Servidor ainda não está pronto");
       }
     }
   }
+
+  async function waitForEmailServer() {
+    return retry(fetchEmailPage, {
+      retries: 100,
+      maxTimeout: 1000,
+    });
+
+    async function fetchEmailPage() {
+      const response = await fetch(emailHttpUrl);
+
+      if (response.status !== 200) {
+        throw Error;
+      }
+    }
+  }
+}
+
+async function clearDatabase() {
+  await database.query("drop schema public cascade; create schema public;");
 }
 
 async function runPendingMigrations() {
@@ -45,11 +64,33 @@ async function createSession(userId) {
   return await session.create(userId);
 }
 
+async function deleteEmails() {
+  await fetch(`${emailHttpUrl}/messages`, {
+    method: "DELETE",
+  });
+}
+
+async function getLasEmail() {
+  const emaillistresponse = await fetch(`${emailHttpUrl}/messages`);
+  const emaillistbody = await emaillistresponse.json();
+  const lastEmailItem = emaillistbody.pop();
+
+  const emailTextResponse = await fetch(
+    `${emailHttpUrl}/messages/${lastEmailItem.id}.plain`,
+  );
+  const emailtextBody = await emailTextResponse.text();
+
+  lastEmailItem.text = emailtextBody;
+  return lastEmailItem;
+}
+
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
   runPendingMigrations,
   createUser,
   createSession,
+  deleteEmails,
+  getLasEmail,
 };
 export default orchestrator;
