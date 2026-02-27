@@ -24,7 +24,6 @@ describe("infra/email.js", () => {
     });
 
     const lastEmail = await orchestrator.getLasEmail();
-    console.log(lastEmail.recipients);
 
     expect(lastEmail.sender).toBe("<contato@meuapp.com>");
     expect(lastEmail.recipients[0]).toBe("<ultimouser@email.com>");
